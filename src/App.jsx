@@ -31,8 +31,8 @@ export default class App extends Component {
     location: "", isLoading: false, displayLocation: "", weather: {}
   }
 
-  fetchWeather=async()=> {
-    if(this.state.location.length<2)return this.setState({weather:{}});
+  fetchWeather = async () => {
+    if (this.state.location.length < 2) return this.setState({ weather: {} });
     try {
       this.setState({ isLoading: true })
       const geoRes = await fetch(
@@ -60,20 +60,20 @@ export default class App extends Component {
     }
   }
 
-  setLocation=(e)=> this.setState({ location: e.target.value})
+  setLocation = (e) => this.setState({ location: e.target.value })
 
-  componentDidMount(){ 
-    this.setState({location:localStorage.getItem('location') || ""})
+  componentDidMount() {
+    this.setState({ location: localStorage.getItem('location') || "" })
   }
 
-componentDidUpdate(prevProps,prevState){
-  if(this.state.location!==prevState.location){
-    this.fetchWeather();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.location !== prevState.location) {
+      this.fetchWeather();
 
-    localStorage.setItem('location',this.state.location)
-    
+      localStorage.setItem('location', this.state.location)
+
+    }
   }
-}
 
 
 
@@ -81,7 +81,7 @@ componentDidUpdate(prevProps,prevState){
     return (
       <div className="app">
         <h1>Classy Weather</h1>
-        <Input location={this.state.location} onChangeLocation={this.setLocation}/>
+        <Input location={this.state.location} onChangeLocation={this.setLocation} />
         {this.state.isLoading && <p className="loader">Loading...</p>}
         {this.state.weather.weathercode && <Weather weather={this.state.weather} location={this.state.displayLocation} />}
       </div>
@@ -89,8 +89,8 @@ componentDidUpdate(prevProps,prevState){
   }
 }
 
-class Input extends Component{
-  render(){
+class Input extends Component {
+  render() {
     return (<div>
       <input type="text" placeholder="Search for location" value={this.props.location} onChange={this.props.onChangeLocation} />
     </div>)
@@ -106,7 +106,7 @@ class Weather extends Component {
     const { temperature_2m_max: maxTemp, temperature_2m_min: minTemp, time: dates, weathercode: codes } = this.props.weather;
 
     return (
-      <div>
+      <div className="weather-wrapper">
         <h2>Weather in {this.props.location}</h2>
         <ul className="weather">
           {dates.map((date, index) => (<Day key={date} date={date} maxTemp={maxTemp.at(index)} minTemp={minTemp.at(index)} code={codes.at(index)} isToday={index === 0} />))}
